@@ -98,7 +98,12 @@ function App() {
 
   useEffect(() => {
     // if no game state on load, show the user the how-to info modal
-    if (!loadGameStateFromLocalStorage()) {
+    const previuosData = loadGameStateFromLocalStorage();
+    let isNewUser = true;
+    previuosData?.forEach((guesses) => {
+      if (guesses?.length !== 0) isNewUser = false;
+    });
+    if (isNewUser) {
       setTimeout(() => {
         setIsInfoModalOpen(true); // TODO: should I keep this logic?
       }, WELCOME_INFO_MODAL_MS);
