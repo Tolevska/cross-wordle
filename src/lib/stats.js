@@ -14,7 +14,6 @@ export const addStatsForCompletedGame = (gameStats, count) => {
     stats.currentStreak = 0;
     stats.gamesFailed += 1;
   } else {
-    stats.winDistribution[count] += 1;
     stats.currentStreak += 1;
     stats.gamesWon += 1;
 
@@ -31,7 +30,6 @@ export const addStatsForCompletedGame = (gameStats, count) => {
 };
 
 const defaultStats = {
-  winDistribution: Array.from(new Array(MAX_CHALLENGES), () => 0),
   gamesFailed: 0,
   gamesWon: 0,
   currentStreak: 0,

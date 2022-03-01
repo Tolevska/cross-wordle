@@ -218,9 +218,6 @@ function App() {
     ) {
       if (winningWord) {
         //TODO check logic for stats
-        setStats(
-          addStatsForCompletedGame(stats, guesses[solutionWordIndex].length)
-        );
 
         const dailyWordsData = loadWordsDataFromLocalStorage();
         let noSolvedWords = 0;
@@ -233,6 +230,9 @@ function App() {
 
         if (noSolvedWords === 3) {
           localStorage.setItem("didWin", true);
+          setStats(
+            addStatsForCompletedGame(stats, guesses[solutionWordIndex].length)
+          );
         }
         return setIsGameWon(true);
       }
