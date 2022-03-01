@@ -13,3 +13,4 @@ export const CURRENT_STREAK_TEXT = "Streak";
 export const BEST_TIME = "Best time";
 export const WINS = "Wins";
 export const LOSES = "Loses";
+export const TEXT_COPIED = "Text copied successfully";
