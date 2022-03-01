@@ -2,10 +2,13 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Countdown from "react-countdown";
 import { tomorrow } from "../../lib/words";
-import { SHARE_TEXT } from "../../constants/strings";
+import { SHARE_TEXT, TEXT_COPIED } from "../../constants/strings";
 import { handleShare } from "../../utils/helpers";
+import { useAlert } from "../../context/AlertContext";
 
 export const GameOverModal = ({ children, isOpen, handleClose }) => {
+  const { showErrorAlert } = useAlert();
+
   return (
     <Transition.Root show={isOpen} as={Fragment}>
       <Dialog
@@ -72,7 +75,12 @@ export const GameOverModal = ({ children, isOpen, handleClose }) => {
                       backgroundColor: "#ffba38",
                       height: "45px",
                     }}
-                    onClick={() => handleShare()}
+                    onClick={() => {
+                      handleShare();
+                      return showErrorAlert(TEXT_COPIED, {
+                        onClose: () => {},
+                      });
+                    }}
                   >
                     <p className="text-xs font-bold text-white">{SHARE_TEXT}</p>
                   </button>
