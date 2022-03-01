@@ -1,0 +1,15 @@
+export const GAME_TITLE = process.env.REACT_APP_GAME_NAME || "";
+export const GAME_COPIED_MESSAGE = "Game copied to clipboard";
+export const NOT_ENOUGH_LETTERS_MESSAGE = "Not enough letters";
+export const WORD_NOT_FOUND_MESSAGE = "This word is not in our word list";
+export const WORD_ALREADY_GUESSED = "You have used this word already";
+// export const CORRECT_WORD_MESSAGE = (solution) => `The word was ${solution}`;
+export const ENTER_TEXT = "ENTER";
+export const STATISTICS_TITLE = "Statistics";
+export const NEW_WORD_TEXT = "New word in";
+export const SHARE_TEXT = "Share";
+export const SUCCESS_RATE_TEXT = "Win%";
+export const CURRENT_STREAK_TEXT = "Streak";
+export const BEST_TIME = "Best time";
+export const WINS = "Wins";
+export const LOSES = "Loses";
