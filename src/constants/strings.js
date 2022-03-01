@@ -12,5 +12,5 @@ export const SUCCESS_RATE_TEXT = "Win%";
 export const CURRENT_STREAK_TEXT = "Streak";
 export const BEST_TIME = "Best time";
 export const WINS = "Wins";
-export const LOSES = "Loses";
+export const LOSES = "Losses";
 export const TEXT_COPIED = "Successfully copied results to clipboard";
