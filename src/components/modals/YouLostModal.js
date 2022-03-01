@@ -32,7 +32,7 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
         </Dialog.Title>
 
         <p className="text-xs mt-1 text-gray-600">
-          Try again tomorrow or upgrade to play again and again!
+          Come back tomorrow to try again!
         </p>
         <p className="text-xs mt-4 text-black">
           <b>Crosswordle #{getIndexOfWord()}</b>

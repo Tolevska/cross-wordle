@@ -57,7 +57,7 @@ export const GameOverModal = ({ children, isOpen, handleClose }) => {
                 style={{ backgroundColor: "#6aaa64" }}
               >
                 <div className="grid-row-2 flex flex-col items-center justify-center ">
-                  <div className="text-gray-200 text-xs">Next crossword</div>
+                  <div className="text-gray-200 text-xs">Next Crosswordle</div>
                   <div className="text-white">
                     <Countdown
                       className="text-md font-medium text-white-900 tracking-wide"
