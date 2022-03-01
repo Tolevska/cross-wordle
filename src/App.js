@@ -175,7 +175,10 @@ function App() {
     if (isGameWon || isGameLost) return;
 
     // check if word is not long enough
-    if (!(unicodeLength(currentGuess) === solutionWord?.length || 5)) {
+    const currentGuessLength = unicodeLength(currentGuess);
+    const solutionWordLength = solutionWord?.length;
+
+    if (currentGuessLength !== solutionWordLength) {
       setCurrentRowClass("jiggle");
       return showErrorAlert(NOT_ENOUGH_LETTERS_MESSAGE, {
         onClose: clearCurrentRowClass,

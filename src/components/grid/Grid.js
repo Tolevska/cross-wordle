@@ -16,8 +16,6 @@ export const Grid = ({
       ? Array.from(Array(rows - 1 - guesses.length))
       : [];
 
-  debugger;
-
   return (
     <div className="pb-6">
       {guesses.map((guess, i) => {

@@ -72,7 +72,6 @@ export const getIndexOfWord = () => {
   const dayInMs = 86400000; // a day in miliseconds
   const todayInMs = new Date().getTime();
   let newIndex = Math.ceil((todayInMs - startDateInMs) / dayInMs);
-  debugger;
   return newIndex;
 };
 

@@ -1,7 +1,7 @@
-import { WORDS } from "../constants/wordlist";
+import { allWords } from "../constants/allowedWords";
 
 export const isWordInWordList = (word) => {
-  return WORDS.includes(word);
+  return allWords.includes(word);
 };
 
 export const isWinningWord = (word, solution) => {
