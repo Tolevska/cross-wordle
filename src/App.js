@@ -193,12 +193,12 @@ function App() {
 
     const winningWord = isWinningWord(currentGuess, solutionWord);
 
-    // TODO: uncomment this condition to not allow duplicate guesses
-    // if (guesses[solutionWordIndex].includes(currentGuess)) {
-    // return showErrorAlert(WORD_ALREADY_GUESSED, {
-    //   onClose: clearCurrentRowClass,
-    // });
-    // }
+    // TODO: condition to not allow duplicate guesses
+    if (guesses[solutionWordIndex].includes(currentGuess)) {
+      return showErrorAlert(WORD_ALREADY_GUESSED, {
+        onClose: clearCurrentRowClass,
+      });
+    }
 
     guesses[solutionWordIndex].push(currentGuess);
     setGuesses(guesses);
@@ -342,9 +342,9 @@ function App() {
         </button>
         <h3 className="mt-3">Solutions for today: (for testing purposes)</h3>
         {loadWordsDataFromLocalStorage() &&
-          loadWordsDataFromLocalStorage().map((el) => {
+          loadWordsDataFromLocalStorage().map((el, i) => {
             return (
-              <pre>
+              <pre key={i}>
                 <b>{el.word}</b>
               </pre>
             );

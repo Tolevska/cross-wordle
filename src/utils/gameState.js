@@ -5,16 +5,16 @@ const dateUpdatedKey = "latestUpdateOfWord";
 const matrixKey = "matrix";
 
 export const saveGameStateToLocalStorage = (gameState) => {
-  // TODO: add encoding
-  // localStorage.setItem(gameStateKey, btoa(JSON.stringify(gameState)));
-  localStorage.setItem(gameStateKey, JSON.stringify(gameState));
+  // encoded data
+  localStorage.setItem(gameStateKey, btoa(JSON.stringify(gameState)));
+  // localStorage.setItem(gameStateKey, JSON.stringify(gameState));
 };
 
 export const loadGameStateFromLocalStorage = () => {
   const state = localStorage.getItem(gameStateKey);
-  // TODO: add encoding
-  // return state ? JSON.parse(decodeURIComponent(atob(state))) : null;
-  return state ? JSON.parse(state) : null;
+  // encoded data
+  return state ? JSON.parse(decodeURIComponent(atob(state))) : null;
+  // return state ? JSON.parse(state) : null;
 };
 
 export const saveStatsToLocalStorage = (gameStats) => {
@@ -27,17 +27,16 @@ export const loadStatsFromLocalStorage = () => {
 };
 
 export const saveWordsDataToLocalStorage = (data) => {
-  console.log(data); // TODO: remove (it is for testing purposes)
-  // TODO: add encoding
-  // localStorage.setItem(wordsDataKey, btoa(JSON.stringify(data)));
-  localStorage.setItem(wordsDataKey, JSON.stringify(data));
+  // encoded data
+  localStorage.setItem(wordsDataKey, btoa(JSON.stringify(data)));
+  // localStorage.setItem(wordsDataKey, JSON.stringify(data));
 };
 
 export const loadWordsDataFromLocalStorage = () => {
   const data = localStorage.getItem(wordsDataKey);
-  // TODO: add encoding
-  // return data ? JSON.parse(decodeURIComponent(atob(data))) : null;
-  return data ? JSON.parse(data) : null;
+  // encoded data
+  return data ? JSON.parse(decodeURIComponent(atob(data))) : null;
+  // return data ? JSON.parse(data) : null;
 };
 
 export const saveMatrixToLocalStorage = (data) => {
