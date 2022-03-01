@@ -19,11 +19,13 @@ export const loadGameStateFromLocalStorage = () => {
 
 export const saveStatsToLocalStorage = (gameStats) => {
   localStorage.setItem(gameStatKey, btoa(JSON.stringify(gameStats)));
+  // localStorage.setItem(gameStatKey, JSON.stringify(gameStats));
 };
 
 export const loadStatsFromLocalStorage = () => {
   const stats = localStorage.getItem(gameStatKey);
   return stats ? JSON.parse(decodeURIComponent(atob(stats))) : null;
+  // return stats ? JSON.parse(stats) : null;
 };
 
 export const saveWordsDataToLocalStorage = (data) => {

@@ -33,7 +33,6 @@ export const isLetterCorrect = (letter, indexOfLetterInWord, guesses) => {
     if (isCorrect) return;
     isCorrect = false;
     if (guess[indexOfLetterInWord] === letter) {
-      console.log(letter, "=", guess[indexOfLetterInWord]);
       isCorrect = true;
     }
   });
