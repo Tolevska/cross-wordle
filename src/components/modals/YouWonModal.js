@@ -3,6 +3,7 @@ import { Dialog } from "@headlessui/react";
 import {
   getDateFormatted,
   getGeneratedMatrixPattern,
+  getIndexOfWord,
   getTimeSpentLabel,
 } from "../../utils/helpers";
 import { HomeScreenGrid } from "../grid/HomeScreenGrid";
@@ -34,8 +35,7 @@ export const YouWonModal = ({ isOpen, handleClose }) => {
 
         <p className="text-xs mt-1 text-gray-600">{getTimeSpentLabel()}</p>
         <p className="text-xs mt-4 text-black">
-          <b>Crosswordle #1</b>
-          {/* // TODO: add logic for number of crosswordle */}
+          <b>Crosswordle #{getIndexOfWord()}</b>
         </p>
         <p className="text-xs text-gray-500">{getDateFormatted()}</p>
         <hr className="w-full mt-4 mb-3" />

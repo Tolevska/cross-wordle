@@ -3,6 +3,7 @@ import { Dialog } from "@headlessui/react";
 import {
   getDateFormatted,
   getGeneratedMatrixPattern,
+  getIndexOfWord,
 } from "../../utils/helpers";
 import { HomeScreenGrid } from "../grid/HomeScreenGrid";
 import { loadWordsDataFromLocalStorage } from "../../utils/gameState";
@@ -34,7 +35,7 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
           Try again tomorrow or upgrade to play again and again!
         </p>
         <p className="text-xs mt-4 text-black">
-          <b>Crosswordle #1</b>
+          <b>Crosswordle #{getIndexOfWord()}</b>
         </p>
         <p className="text-xs text-gray-500">{getDateFormatted()}</p>
         <hr className="w-full mt-4 mb-3" />

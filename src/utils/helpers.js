@@ -67,8 +67,17 @@ export const generateMatrix = (pattern) => {
   return matrix;
 };
 
+export const getIndexOfWord = () => {
+  const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
+  const dayInMs = 86400000; // a day in miliseconds
+  const todayInMs = new Date().getTime();
+  let newIndex = Math.ceil((todayInMs - startDateInMs) / dayInMs);
+  debugger;
+  return newIndex;
+};
+
 export const getGeneratedMatrixPattern = () => {
-  const startDateInMs = new Date("2022-03-01").getTime();
+  const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
   const dayInMs = 86400000; // a day in miliseconds
   const todayInMs = new Date().getTime();
   const latestUpdate = loadDateFromLocalStorage();
@@ -204,7 +213,7 @@ export const handleShare = () => {
     pattern = getBeatCrosswordleTimeLabel();
     pattern = pattern.concat("\n\n");
   } else {
-    pattern = "I lost Crosswordle #1\n"; // TODO: improve #No logic
+    pattern = `I lost Crosswordle #${getIndexOfWord()}\n`;
   }
 
   matrix.forEach((row) => {
