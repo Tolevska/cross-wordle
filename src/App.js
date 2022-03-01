@@ -20,8 +20,10 @@ import { isWordInWordList, isWinningWord, unicodeLength } from "./lib/words";
 import { addStatsForCompletedGame, loadStats } from "./lib/stats";
 import {
   loadGameStateFromLocalStorage,
+  loadIsNewUser,
   loadWordsDataFromLocalStorage,
   saveGameStateToLocalStorage,
+  saveIsNewUser,
 } from "./utils/gameState";
 
 import { AlertContainer } from "./components/alerts/AlertContainer";
@@ -98,12 +100,9 @@ function App() {
 
   useEffect(() => {
     // if no game state on load, show the user the how-to info modal
-    const previuosData = loadGameStateFromLocalStorage();
-    let isNewUser = true;
-    previuosData?.forEach((guesses) => {
-      if (guesses?.length !== 0) isNewUser = false;
-    });
+    const isNewUser = loadIsNewUser();
     if (isNewUser) {
+      saveIsNewUser(false);
       setTimeout(() => {
         setIsInfoModalOpen(true); // TODO: should I keep this logic?
       }, WELCOME_INFO_MODAL_MS);

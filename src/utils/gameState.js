@@ -3,6 +3,7 @@ const gameStatKey = "gameStats";
 const wordsDataKey = "wordsData";
 const dateUpdatedKey = "latestUpdateOfWord";
 const matrixKey = "matrix";
+const isNewUserKey = "isNewUser";
 
 export const saveGameStateToLocalStorage = (gameState) => {
   // encoded data
@@ -57,4 +58,13 @@ export const loadDateFromLocalStorage = () => {
 
 export const saveDateToLocalStorage = (date) => {
   localStorage.setItem(dateUpdatedKey, date);
+};
+
+export const loadIsNewUser = () => {
+  const data = localStorage.getItem(isNewUserKey);
+  return data ? JSON.parse(data) : true;
+};
+
+export const saveIsNewUser = (isNewUser = false) => {
+  localStorage.setItem(isNewUserKey, JSON.stringify(isNewUser));
 };
