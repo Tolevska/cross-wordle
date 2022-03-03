@@ -1,6 +1,6 @@
 import { getStatuses } from "../../lib/statuses";
 import { Key } from "./Key";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ENTER_TEXT } from "../../constants/strings";
 import { localeAwareUpperCase } from "../../lib/words";
 
@@ -12,7 +12,9 @@ export const Keyboard = ({
   isRevealing,
   solution,
 }) => {
-  const charStatuses = getStatuses(guesses, solution);
+  const [charStatuses, setCharStatuses] = useState(() => {
+    return getStatuses(guesses, solution);
+  });
 
   const onClick = (value) => {
     if (value === "ENTER") {
@@ -44,7 +46,7 @@ export const Keyboard = ({
   }, [onEnter, onDelete, onChar]);
 
   return (
-    <div>
+    <div className="keyboard-wrapper-custom">
       <div className="flex justify-center mb-1">
         {["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((key) => (
           <Key

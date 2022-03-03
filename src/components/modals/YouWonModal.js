@@ -39,14 +39,22 @@ export const YouWonModal = ({ isOpen, handleClose }) => {
         </p>
         <p className="text-xs text-gray-500">{getDateFormatted()}</p>
         <hr className="w-full mt-4 mb-3" />
-        <span>
-          <HomeScreenGrid
-            matrixPattern={matrixPattern}
-            currentRowClassName={""}
-            dailyWordsData={dailyWordsData}
-            hideEmptyCells={true}
-          />
-        </span>
+        <div className="w-screen">
+          <div
+            className="content-wrapper"
+            style={{
+              maxWidth: "80vw",
+              margin: "0 auto",
+            }}
+          >
+            <HomeScreenGrid
+              matrixPattern={matrixPattern}
+              currentRowClassName={""}
+              dailyWordsData={dailyWordsData}
+              hideEmptyCells={true}
+            />
+          </div>
+        </div>
       </div>
     </GameOverModal>
   );

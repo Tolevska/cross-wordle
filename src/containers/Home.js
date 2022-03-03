@@ -15,7 +15,10 @@ import {
 
 const Home = ({ setWordToGuess }) => {
   const todayInMs = new Date().getTime();
-  const matrixPattern = getGeneratedMatrixPattern();
+
+  const [matrixPattern, setMatrixPattern] = useState(() => {
+    return getGeneratedMatrixPattern();
+  });
 
   const [latestUpdateOfWord, setLatestUpdateOfWord] = useState(() => {
     const loadLatestUpdate = loadDateFromLocalStorage();
