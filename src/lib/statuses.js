@@ -6,9 +6,9 @@ import {
 
 export const getStatuses = (guesses, solution) => {
   const charObj = {};
-  const splitSolution = solution.split("");
+  const splitSolution = solution?.split("");
 
-  guesses.forEach((word) => {
+  guesses?.forEach((word) => {
     word.split("").forEach((letter, i) => {
       if (!splitSolution.includes(letter)) {
         return (charObj[letter] = "absent");

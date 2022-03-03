@@ -13,10 +13,10 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
   const [dailyWordsData, setDailyWordsData] = useState(() => {
     return loadWordsDataFromLocalStorage();
   });
-
   const [matrixPattern, setMatrixPattern] = useState(() => {
     return getGeneratedMatrixPattern();
   });
+
   return (
     <GameOverModal title="You lost" isOpen={isOpen} handleClose={handleClose}>
       <div className="flex flex-col items-center">
@@ -39,15 +39,22 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
         </p>
         <p className="text-xs text-gray-500">{getDateFormatted()}</p>
         <hr className="w-full mt-4 mb-3" />
-        <span>
-          <HomeScreenGrid
-            matrixPattern={matrixPattern}
-            currentRowClassName={""}
-            dailyWordsData={dailyWordsData}
-            hideEmptyCells={true}
-            page={"lostModal"}
-          />
-        </span>
+        <div className="w-screen">
+          <div
+            className="content-wrapper"
+            style={{
+              maxWidth: "80vw",
+              margin: "0 auto",
+            }}
+          >
+            <HomeScreenGrid
+              matrixPattern={matrixPattern}
+              currentRowClassName={""}
+              dailyWordsData={dailyWordsData}
+              hideEmptyCells={true}
+            />
+          </div>
+        </div>
       </div>
     </GameOverModal>
   );

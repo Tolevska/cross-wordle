@@ -17,7 +17,13 @@ export const Grid = ({
       : [];
 
   return (
-    <div className="pb-6">
+    <div
+      className={"grid-wrapper-custom pb-6"}
+      style={{
+        gridTemplateColumns: `repeat(${columns}, 1fr)`,
+        maxWidth: columns === 5 ? "70%" : columns === 4 ? "50%" : "80%",
+      }}
+    >
       {guesses.map((guess, i) => {
         return (
           <CompletedRow

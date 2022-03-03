@@ -26,7 +26,7 @@ export const HomeScreenRow = ({
   }, []);
 
   return (
-    <div className="flex justify-center mb-1">
+    <>
       {rowWithUpdatedStatuses?.map((obj, i) => {
         return (
           <Fragment key={i}>
@@ -42,21 +42,20 @@ export const HomeScreenRow = ({
                 isGameOver={isGameOver}
               />
             ) : (
-              <button onClick={() => onChooseWord(i)}>
-                <Cell
-                  key={i}
-                  value={obj.value}
-                  status={obj?.status}
-                  position={i}
-                  isRevealing={isRevealing}
-                  isCompleted
-                  page={page}
-                />
-              </button>
+              <Cell
+                key={i}
+                value={obj.value}
+                status={obj?.status}
+                position={i}
+                isRevealing={isRevealing}
+                isCompleted
+                onChooseWord={onChooseWord}
+                page={page}
+              />
             )}
           </Fragment>
         );
       })}
-    </div>
+    </>
   );
 };

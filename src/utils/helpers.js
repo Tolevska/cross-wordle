@@ -242,6 +242,18 @@ export const handleShare = () => {
   navigator.clipboard.writeText(pattern);
 };
 
+export const didEndGame = () => {
+  return didWinGame() || didLoseGame();
+};
+
+export const didWinGame = () => {
+  return localStorage.getItem("didWin");
+};
+
+export const didLoseGame = () => {
+  return localStorage.getItem("didLose");
+};
+
 export const getTimeSpentLabel = () => {
   const timeSpent = getTimeSpent();
   if (timeSpent) {
@@ -261,8 +273,8 @@ export const getBeatCrosswordleTimeLabel = () => {
 };
 
 export const getTimeSpent = () => {
-  if (localStorage.getItem("time")) {
-    const time = localStorage.getItem("time");
+  if (localStorage.getItem("timeSpent")) {
+    const time = localStorage.getItem("timeSpent");
     let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
     let seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
 

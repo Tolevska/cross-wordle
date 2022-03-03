@@ -13,7 +13,6 @@ import {
 import {
   MAX_CHALLENGES,
   REVEAL_TIME_MS,
-  GAME_LOST_INFO_DELAY,
   WELCOME_INFO_MODAL_MS,
 } from "./constants/settings";
 import { isWordInWordList, isWinningWord, unicodeLength } from "./lib/words";
@@ -29,7 +28,11 @@ import {
 import { AlertContainer } from "./components/alerts/AlertContainer";
 import { useAlert } from "./context/AlertContext";
 import Home from "./containers/Home";
-import { getUpdatedDailyWordsData } from "./utils/helpers";
+import {
+  didEndGame,
+  didWinGame,
+  getUpdatedDailyWordsData,
+} from "./utils/helpers";
 
 function App() {
   const { showErrorAlert } = useAlert();
@@ -41,6 +44,7 @@ function App() {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
+  // TODO: I think this is isWordGuessed and not Game won but let it be
   const [isWonModalOpen, setIsWonModalOpen] = useState(false);
   const [isLostModalOpen, setIsLostModalOpen] = useState(false);
   const [isRevealing, setIsRevealing] = useState(false);
@@ -52,7 +56,6 @@ function App() {
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage();
     //todo improve logic
-
     // const gameWasWon = loaded?.guesses.includes(solutionWord);
     // if (gameWasWon) {
     //   setIsGameWon(true);
@@ -67,28 +70,40 @@ function App() {
     saveGameStateToLocalStorage(guesses);
   }, [guesses]);
 
+  // const [customStyleGrid, setCustomStyleGrid] = useState({});
+
+  // const handleResize = () => {
+  //   debugger;
+  //   if (!document) return;
+  //   let e = document.querySelector("#grid-wrapper");
+  //   debugger;
+  //   let a = Math.min(Math.floor(e?.clientHeight * (5 / 6)), 350);
+  //   let s = 6 * Math.floor(a / 5);
+  //   setCustomStyleGrid({ ...customStyleGrid, width: "".concat(a, "px") });
+  //   setCustomStyleGrid({ ...customStyleGrid, height: "".concat(s, "px") });
+  // };
+
   useEffect(() => {
     const dailyWordsData = loadWordsDataFromLocalStorage();
 
     if (isGameWon) {
       getUpdatedDailyWordsData(dailyWordsData, solutionWord);
-      // setTimeout(() => {
       if (!showHomeScreen) {
         setShowHomeScreen(true);
-        const didWinCrossWordle = localStorage.getItem("didWin");
-        if (didWinCrossWordle === "true") {
+        const didWinCrossWordle = didWinGame();
+        if (didWinCrossWordle) {
+          localStorage.setItem("timeSpent", JSON.stringify(time));
           setIsWonModalOpen(true);
         }
         window.location.reload();
       }
-      // }, REVEAL_TIME_MS * (solutionWord?.length || 5));
     }
 
     if (isGameLost) {
       if (!showHomeScreen) {
         setShowHomeScreen(true);
         const didLoseCrossWordle = localStorage.getItem("didLose");
-        if (didLoseCrossWordle === "true") {
+        if (didLoseCrossWordle) {
           setIsLostModalOpen(true);
         }
         window.location.reload();
@@ -96,21 +111,20 @@ function App() {
     }
   }, [isGameWon, isGameLost]);
 
-  // ============================================
-
   useEffect(() => {
     // if no game state on load, show the user the how-to info modal
     const isNewUser = loadIsNewUser();
     if (isNewUser) {
       saveIsNewUser(false);
       setTimeout(() => {
-        setIsInfoModalOpen(true); // TODO: should I keep this logic?
+        setIsInfoModalOpen(true);
       }, WELCOME_INFO_MODAL_MS);
     }
 
-    // if (localStorage.getItem("time")) {
-    //   setTime(parseInt(localStorage.getItem("time")));
-    // }
+    if (localStorage.getItem("timeSpent")) {
+      const time = parseInt(localStorage.getItem("timeSpent"));
+      setTime(time);
+    }
 
     const didWinCrossWordle = localStorage.getItem("didWin");
     if (didWinCrossWordle && didWinCrossWordle !== isWonModalOpen) {
@@ -121,23 +135,56 @@ function App() {
     if (didLoseCrossWordle && didLoseCrossWordle !== isLostModalOpen) {
       setIsLostModalOpen(true);
     }
+
+    // window.addEventListener("resize", handleResize);
+
+    // handleResize();
   }, []);
 
-  useEffect(() => {
-    // useEffect to manage timer data
-    let interval = null;
+  // ====================================
+  // ====================================
 
+  window.addEventListener("beforeunload", function (event) {
+    const shouldClear = localStorage.setItem(
+      "shouldClear",
+      JSON.stringify(true)
+    );
+    if (shouldClear && JSON.parse(shouldClear)) {
+      localStorage.clear();
+    } else {
+      localStorage.setItem("timeSpent", JSON.stringify(time));
+    }
+    return "";
+  });
+
+  // window.onbeforeunload = function () {
+
+  // };
+
+  // ++++++++++
+
+  useEffect(() => {
+    // manage timer data
+    let interval = null;
     if (!isGameLost && !isGameWon) {
       interval = setInterval(() => {
         setTime((time) => time + 10);
       }, 10);
-    } else if (!localStorage.getItem("time")) {
-      localStorage.setItem("time", time);
+    } else if (!localStorage.getItem("timeSpent")) {
+      localStorage.setItem("timeSpent", time);
+      clearInterval(interval);
+    }
+
+    const isGameOver = didEndGame();
+
+    if (isGameOver) {
       clearInterval(interval);
     }
 
     return () => clearInterval(interval);
   }, [isGameLost, isGameWon]);
+
+  // ====================================
 
   const onChar = (value) => {
     if (
@@ -200,7 +247,7 @@ function App() {
 
     const winningWord = isWinningWord(currentGuess, solutionWord);
 
-    // TODO: condition to not allow duplicate guesses
+    // do not allow duplicate guesses
     if (guesses[solutionWordIndex].includes(currentGuess)) {
       return showErrorAlert(WORD_ALREADY_GUESSED, {
         onClose: clearCurrentRowClass,
@@ -214,13 +261,11 @@ function App() {
     saveGameStateToLocalStorage(guesses);
 
     if (
-      unicodeLength(currentGuess) === (solutionWord?.length || 5) && // ako e ok dolzinata na zborot
-      guesses[solutionWordIndex].length <= MAX_CHALLENGES && // ako brojot na pogoduvanja e <= 6
-      !isGameWon // ako ne sme pobedile
+      unicodeLength(currentGuess) === (solutionWord?.length || 5) && // if length of word is correct
+      guesses[solutionWordIndex].length <= MAX_CHALLENGES && // if number of guesses <= 6
+      !isGameWon // if user lost
     ) {
       if (winningWord) {
-        //TODO check logic for stats
-
         const dailyWordsData = loadWordsDataFromLocalStorage();
         let noSolvedWords = 0;
 
@@ -240,7 +285,6 @@ function App() {
       }
 
       if (guesses[solutionWordIndex].length === MAX_CHALLENGES) {
-        //TODO check logic for stats
         setStats(
           addStatsForCompletedGame(stats, guesses[solutionWordIndex].length + 1)
         );
@@ -254,17 +298,12 @@ function App() {
     const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2) + ":";
     const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2) + ":";
     const miliseconds = ("0" + ((time / 10) % 1000)).slice(-2);
-
-    // const miliseconds = "0" + Math.floor((time % 1000) / 100);
-    // const seconds = "0" + Math.floor((time / 1000) % 60);
-    // const minutes = "0" + Math.floor((time / (1000 * 60)) % 60);
-
     return minutes + seconds + miliseconds;
   };
 
   return (
     <>
-      <div className="border-b-2 flex items-center justify-center h-20">
+      <div className="navbar border-b-2 flex items-center justify-center h-20">
         {!showHomeScreen && (
           <button
             className="cursor-pointer absolute left-6"
@@ -290,34 +329,66 @@ function App() {
         </div>
       </div>
 
-      <div className="pt-2 pb-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <div
+        id="screen-wrapper"
+        className="screen-wrapper-custom w-full sm:w-3/4 md:max-w-[500px] pt-2 pb-8 mx-auto sm:px-6 lg:px-8"
+        // style={customStyleGrid}
+      >
         <div className="flex items-center justify-center h-16 font-bold text-base">
-          T I M E R{/* {getTimerData()} */}
+          {/* {getTimerData()} */}
+          timer
         </div>
-        <hr className="mb-7 w-96 mx-auto" />
-        {!showHomeScreen ? (
-          <>
-            <Grid
-              guesses={guesses[solutionWordIndex]}
-              currentGuess={currentGuess}
-              // isRevealing={isRevealing}
-              currentRowClassName={currentRowClass}
-              rows={6}
-              columns={solutionWord?.length || 5}
-              solution={solutionWord}
-            />
-            <Keyboard
-              onChar={onChar}
-              onDelete={onDelete}
-              onEnter={onEnter}
-              guesses={guesses[solutionWordIndex]}
-              // isRevealing={isRevealing}
-              solution={solutionWord}
-            />
-          </>
-        ) : (
-          <Home setWordToGuess={onChosenWordToGuess} />
-        )}
+        <hr className="mb-7 mx-auto" />
+        <div
+          // style={customStyleGrid}
+          className="content-wrapper"
+        >
+          {!showHomeScreen ? (
+            <>
+              <Grid
+                guesses={guesses[solutionWordIndex]}
+                currentGuess={currentGuess}
+                currentRowClassName={currentRowClass}
+                rows={6}
+                columns={solutionWord?.length || 5}
+                solution={solutionWord}
+              />
+              <Keyboard
+                onChar={onChar}
+                onDelete={onDelete}
+                onEnter={onEnter}
+                guesses={guesses[solutionWordIndex]}
+                solution={solutionWord}
+              />
+            </>
+          ) : (
+            <>
+              <Home setWordToGuess={onChosenWordToGuess} />
+              <button
+                onClick={() => {
+                  localStorage.clear(); //TODO: do we need this?
+                  localStorage.setItem("shouldClear", JSON.stringify(true));
+                  window.location.reload();
+                }}
+                className="bg-orange-300 px-3 py-2"
+              >
+                Play again
+              </button>
+              <h3 className="mt-3">
+                Solutions for today: (for testing purposes)
+              </h3>
+              {loadWordsDataFromLocalStorage() &&
+                loadWordsDataFromLocalStorage().map((el, i) => {
+                  return (
+                    <pre key={i}>
+                      <b>{el.word}</b>
+                    </pre>
+                  );
+                })}
+            </>
+          )}
+        </div>
+
         <InfoModal
           isOpen={isInfoModalOpen}
           handleClose={() => setIsInfoModalOpen(false)}
@@ -338,24 +409,6 @@ function App() {
         <AlertContainer />
 
         {/* TODO: remove this before going in production */}
-        <button
-          onClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}
-          className="bg-orange-300 px-3 py-2"
-        >
-          Play again
-        </button>
-        <h3 className="mt-3">Solutions for today: (for testing purposes)</h3>
-        {loadWordsDataFromLocalStorage() &&
-          loadWordsDataFromLocalStorage().map((el, i) => {
-            return (
-              <pre key={i}>
-                <b>{el.word}</b>
-              </pre>
-            );
-          })}
       </div>
     </>
   );
