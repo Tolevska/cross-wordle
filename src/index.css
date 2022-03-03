@@ -128,11 +128,11 @@ body {
   padding-top: 100%;
 } */
 
-.keyboard-wrapper-custom {
+/* .keyboard-wrapper-custom {
   height: 30%;
   display: flex;
   flex-direction: column;
-}
+} */
 
 .cell-fill-animation {
   animation: onTypeCell linear;

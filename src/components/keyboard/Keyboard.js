@@ -46,7 +46,7 @@ export const Keyboard = ({
   }, [onEnter, onDelete, onChar]);
 
   return (
-    <div className="keyboard-wrapper-custom">
+    <>
       <div className="flex justify-center mb-1">
         {["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"].map((key) => (
           <Key
@@ -86,6 +86,6 @@ export const Keyboard = ({
           <img src="/icons/delete-icon.svg" style={{ height: "21px" }} />
         </Key>
       </div>
-    </div>
+    </>
   );
 };
