@@ -88,11 +88,13 @@ export const getGeneratedMatrixPattern = () => {
     const prevIndex = Math.ceil((latestUpdate - startDateInMs) / dayInMs);
     if (prevIndex < newIndex) {
       pattern = WORD_PATTERNS[newIndex];
+      localStorage.removeItem("timeSpent");
     } else {
       return previousPattern;
     }
   } else {
     pattern = WORD_PATTERNS[newIndex];
+    localStorage.removeItem("timeSpent");
   }
 
   return generateMatrix(pattern);
@@ -273,8 +275,8 @@ export const getBeatCrosswordleTimeLabel = () => {
 };
 
 export const getTimeSpent = () => {
-  if (localStorage.getItem("timeSpent")) {
-    const time = localStorage.getItem("timeSpent");
+  if (localStorage.getItem("finishedIn")) {
+    const time = localStorage.getItem("finishedIn");
     let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
     let seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
 

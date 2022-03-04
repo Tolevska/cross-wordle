@@ -54,6 +54,10 @@ function App() {
   const [solutionWord, setSolutionWord] = useState(null);
   const [solutionWordIndex, setSolutionWordIndex] = useState(null);
 
+  const [dailyWords, setDailyWords] = useState(() =>
+    loadWordsDataFromLocalStorage()
+  );
+
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage();
     //todo improve logic
@@ -82,34 +86,6 @@ function App() {
     setClientScreenSize({ height, width });
     return;
   };
-
-  useEffect(() => {
-    const dailyWordsData = loadWordsDataFromLocalStorage();
-
-    if (isGameWon) {
-      getUpdatedDailyWordsData(dailyWordsData, solutionWord);
-      if (!showHomeScreen) {
-        setShowHomeScreen(true);
-        const didWinCrossWordle = didWinGame();
-        if (didWinCrossWordle) {
-          localStorage.setItem("timeSpent", JSON.stringify(time));
-          setIsWonModalOpen(true);
-        }
-        window.location.reload();
-      }
-    }
-
-    if (isGameLost) {
-      if (!showHomeScreen) {
-        setShowHomeScreen(true);
-        const didLoseCrossWordle = localStorage.getItem("didLose");
-        if (didLoseCrossWordle) {
-          setIsLostModalOpen(true);
-        }
-        window.location.reload();
-      }
-    }
-  }, [isGameWon, isGameLost]);
 
   useEffect(() => {
     handleResize();
@@ -173,8 +149,38 @@ function App() {
 
     const isGameOver = didEndGame();
 
+    const dailyWordsData = loadWordsDataFromLocalStorage();
+
+    if (isGameWon) {
+      const newData = getUpdatedDailyWordsData(dailyWordsData, solutionWord);
+      if (!showHomeScreen) {
+        setShowHomeScreen(true);
+        const didWinCrossWordle = didWinGame();
+        if (didWinCrossWordle) {
+          localStorage.setItem("timeSpent", JSON.stringify(time));
+          setDailyWords(newData);
+          setIsWonModalOpen(true);
+          localStorage.setItem("finishedIn", JSON.stringify(time));
+        }
+        window.location.reload();
+      }
+    }
+
+    if (isGameLost) {
+      if (!showHomeScreen) {
+        setShowHomeScreen(true);
+        const didLoseCrossWordle = localStorage.getItem("didLose");
+        if (didLoseCrossWordle) {
+          setIsLostModalOpen(true);
+          localStorage.setItem("finishedIn", JSON.stringify(time));
+        }
+        window.location.reload();
+      }
+    }
+
     if (isGameOver) {
       clearInterval(interval);
+      localStorage.removeItem("timeSpent");
     }
 
     return () => clearInterval(interval);
@@ -331,7 +337,7 @@ function App() {
         style={{ maxHeight: Platform.OS === "iOS" ? "60vh" : "80vh" }}
       >
         <div className="flex items-center justify-center h-16 font-bold text-base">
-          {/* {getTimerData()} */}
+          {getTimerData()}
         </div>
         <hr className="mb-7 mx-auto" />
         <div className="content-wrapper">
@@ -392,6 +398,7 @@ function App() {
         />
         <YouWonModal
           isOpen={isWonModalOpen}
+          dailyWordsData={dailyWords}
           handleClose={() => setIsWonModalOpen(false)}
         />
         <YouLostModal
