@@ -8,15 +8,25 @@ export const HomeScreenGrid = ({
   hideEmptyCells = false,
   page,
   custom,
+  isModal = false,
 }) => {
   const columns = matrixPattern[0]?.length;
+  let customStyle = {};
 
-  let { height, width } = custom;
-  let customSize = 0;
-
-  height = height - 80 - 70; // 80 e navbar 70 e timer
-
-  customSize = height <= width ? height : width;
+  if (!isModal) {
+    let customSize = 0;
+    let { height, width } = custom;
+    height = height - 80 - 70; // 80 e navbar 70 e timer
+    customSize = height <= width ? height : width;
+    customStyle = {
+      height: `${customSize}px`,
+      width: `${customSize - 30}px`,
+    };
+  } else {
+    customStyle = {
+      height: "80vw",
+    };
+  }
 
   return (
     <div
@@ -24,8 +34,7 @@ export const HomeScreenGrid = ({
       id="grid-wrapper"
       style={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        height: `${customSize}px`,
-        width: `${customSize - 30}px`,
+        ...customStyle,
       }}
     >
       {matrixPattern &&
