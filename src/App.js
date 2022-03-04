@@ -332,7 +332,6 @@ function App() {
       >
         <div className="flex items-center justify-center h-16 font-bold text-base">
           {/* {getTimerData()} */}
-          <pre>{Platform.OS}</pre>
         </div>
         <hr className="mb-7 mx-auto" />
         <div className="content-wrapper">
@@ -361,9 +360,7 @@ function App() {
                 custom={clientScreenSize}
                 setWordToGuess={onChosenWordToGuess}
               />
-              {/* {navigator.platform} */}
               {/* TODO: remove this before going in production */}
-
               <button
                 onClick={() => {
                   localStorage.clear(); //TODO: do we need this?
