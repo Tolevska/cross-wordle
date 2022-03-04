@@ -1,5 +1,3 @@
-// import { MAX_WORD_LENGTH, REVEAL_TIME_MS } from "../../constants/settings";
-
 export const Key = ({
   children,
   status,
@@ -8,7 +6,6 @@ export const Key = ({
   onClick,
   isRevealing,
 }) => {
-  // const keyDelayMs = REVEAL_TIME_MS * MAX_WORD_LENGTH;
   const keyDelayMs = 0;
 
   let backgroundColor;

@@ -12,9 +12,7 @@ export const Keyboard = ({
   isRevealing,
   solution,
 }) => {
-  const [charStatuses, setCharStatuses] = useState(() => {
-    return getStatuses(guesses, solution);
-  });
+  const charStatuses = getStatuses(guesses, solution);
 
   const onClick = (value) => {
     if (value === "ENTER") {
