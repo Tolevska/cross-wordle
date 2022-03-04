@@ -359,6 +359,8 @@ function App() {
                 custom={clientScreenSize}
                 setWordToGuess={onChosenWordToGuess}
               />
+              {/* TODO: remove this before going in production */}
+
               <button
                 onClick={() => {
                   localStorage.clear(); //TODO: do we need this?
@@ -402,8 +404,6 @@ function App() {
           gameStats={stats}
         />
         <AlertContainer />
-
-        {/* TODO: remove this before going in production */}
       </div>
     </>
   );
