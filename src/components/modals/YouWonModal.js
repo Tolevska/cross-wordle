@@ -47,12 +47,13 @@ export const YouWonModal = ({ isOpen, handleClose }) => {
               margin: "0 auto",
             }}
           >
-            {/* <HomeScreenGrid
+            <HomeScreenGrid
               matrixPattern={matrixPattern}
               currentRowClassName={""}
               dailyWordsData={dailyWordsData}
               hideEmptyCells={true}
-            /> */}
+              isModal={true}
+            />
           </div>
         </div>
       </div>
