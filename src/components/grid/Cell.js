@@ -9,10 +9,10 @@ export const Cell = (props) => {
     "custom-cell border-solid border-2 flex items-center justify-center text-4xl font-bold rounded";
 
   if (!status) {
-    classes = classes.concat(" bg-white border-slate-200 ");
+    classes = classes.concat(" bg-white border-slate-200");
   }
   if (value && !status) {
-    classes = classes.concat(" border-black ");
+    classes = classes.concat(" border-black");
   }
 
   const setAbsentStyle = () => {

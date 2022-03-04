@@ -247,14 +247,14 @@ function App() {
       setIsRevealing(false);
     }, REVEAL_TIME_MS * (solutionWord?.length || 5));
 
-    const winningWord = isWinningWord(currentGuess, solutionWord);
-
     // do not allow duplicate guesses
     if (guesses[solutionWordIndex].includes(currentGuess)) {
       return showErrorAlert(WORD_ALREADY_GUESSED, {
         onClose: clearCurrentRowClass,
       });
     }
+
+    const winningWord = isWinningWord(currentGuess, solutionWord);
 
     guesses[solutionWordIndex].push(currentGuess);
     setGuesses(guesses);
