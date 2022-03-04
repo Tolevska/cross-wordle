@@ -22,7 +22,7 @@ export const Grid = ({
 
   height = height - 80 - 70 - 180 - 20; // 80 e navbar 70 e timer 180 e keyboard 20 margin pod grid
   if (Platform.OS === "iOS") {
-    height = height - 40;
+    height = height - 90;
   }
   const customSize = height <= width ? height : width;
 
