@@ -53,7 +53,6 @@ function App() {
   const [time, setTime] = useState(0);
   const [solutionWord, setSolutionWord] = useState(null);
   const [solutionWordIndex, setSolutionWordIndex] = useState(null);
-  const [screenWrapperMaxHeight, setScreenWrapperMaxHeight] = useState({});
 
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage();
@@ -143,9 +142,6 @@ function App() {
 
     window.addEventListener("resize", handleResize);
     handleResize();
-    // console.log(Platform.OS);
-    // if(Platform.OS )
-    // setScreenWrapperMaxHeight;
   }, []);
 
   window.addEventListener("beforeunload", function (event) {
@@ -332,11 +328,11 @@ function App() {
       <div
         id="screen-wrapper"
         className="screen-wrapper-custom w-full sm:w-3/4 md:max-w-[500px] pt-2 pb-8 mx-auto sm:px-6 lg:px-8"
-        // style={styleOnIOS}
+        style={{ maxHeight: Platform.OS === "iOS" ? "60vh" : "80vh" }}
       >
         <div className="flex items-center justify-center h-16 font-bold text-base">
           {/* {getTimerData()} */}
-          timer
+          <pre>{Platform.OS}</pre>
         </div>
         <hr className="mb-7 mx-auto" />
         <div className="content-wrapper">
@@ -366,10 +362,6 @@ function App() {
                 setWordToGuess={onChosenWordToGuess}
               />
               {/* {navigator.platform} */}
-              <pre>{Platform.OS}</pre>
-              <pre>{Platform.DeviceType}</pre>
-
-              <pre>{Platform}</pre>
               {/* TODO: remove this before going in production */}
 
               <button

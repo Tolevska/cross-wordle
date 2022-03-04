@@ -1,3 +1,4 @@
+import Platform from "react-platform-js";
 import { CompletedRow } from "./CompletedRow";
 import { CurrentRow } from "./CurrentRow";
 import { EmptyRow } from "./EmptyRow";
@@ -20,6 +21,9 @@ export const Grid = ({
   let { height, width } = custom;
 
   height = height - 80 - 70 - 180 - 20; // 80 e navbar 70 e timer 180 e keyboard 20 margin pod grid
+  if (Platform.OS === "iOS") {
+    height = height - 40;
+  }
   const customSize = height <= width ? height : width;
 
   const finalHeight = customSize;
