@@ -7,14 +7,9 @@ import {
   getTimeSpentLabel,
 } from "../../utils/helpers";
 import { HomeScreenGrid } from "../grid/HomeScreenGrid";
-import { loadWordsDataFromLocalStorage } from "../../utils/gameState";
 import { useState } from "react";
 
-export const YouWonModal = ({ isOpen, handleClose }) => {
-  const [dailyWordsData, setDailyWordsData] = useState(() => {
-    return loadWordsDataFromLocalStorage();
-  });
-
+export const YouWonModal = ({ dailyWordsData, isOpen, handleClose }) => {
   const [matrixPattern, setMatrixPattern] = useState(() => {
     return getGeneratedMatrixPattern();
   });
