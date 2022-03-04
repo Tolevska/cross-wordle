@@ -10,18 +10,37 @@ export const Grid = ({
   rows,
   columns = 5,
   solution,
+  custom,
 }) => {
   const empties =
     guesses.length < rows - 1
       ? Array.from(Array(rows - 1 - guesses.length))
       : [];
 
+  let { height, width } = custom;
+
+  height = height - 80 - 70 - 180 - 20; // 80 e navbar 70 e timer 180 e keyboard 20 margin pod grid
+  const customSize = height <= width ? height : width;
+
+  const finalHeight = customSize;
+  let finalWidth = customSize;
+
+  if (columns === 4) {
+    finalWidth = finalWidth - 94;
+  } else if (columns === 5) {
+    finalWidth = finalWidth - 54;
+  } else if (columns === 6) {
+    finalWidth = finalWidth + 14;
+  }
+
   return (
     <div
-      className={"grid-wrapper-custom pb-6"}
+      className={"grid-wrapper-custom"}
+      id="grid-wrapper"
       style={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        maxWidth: columns === 5 ? "70%" : columns === 4 ? "50%" : "80%",
+        height: `${finalHeight}px`,
+        width: `${finalWidth}px`,
       }}
     >
       {guesses.map((guess, i) => {

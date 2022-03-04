@@ -13,7 +13,7 @@ import {
   saveGameStateToLocalStorage,
 } from "../utils/gameState";
 
-const Home = ({ setWordToGuess }) => {
+const Home = ({ setWordToGuess, custom }) => {
   const todayInMs = new Date().getTime();
 
   const [matrixPattern, setMatrixPattern] = useState(() => {
@@ -58,6 +58,7 @@ const Home = ({ setWordToGuess }) => {
       matrixPattern={matrixPattern}
       setWordToGuess={setWordToGuess}
       dailyWordsData={wordsData}
+      custom={custom}
       page="homeScreen"
     />
   );

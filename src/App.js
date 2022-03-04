@@ -70,18 +70,17 @@ function App() {
     saveGameStateToLocalStorage(guesses);
   }, [guesses]);
 
-  // const [customStyleGrid, setCustomStyleGrid] = useState({});
+  const [clientScreenSize, setClientScreenSize] = useState({});
 
-  // const handleResize = () => {
-  //   debugger;
-  //   if (!document) return;
-  //   let e = document.querySelector("#grid-wrapper");
-  //   debugger;
-  //   let a = Math.min(Math.floor(e?.clientHeight * (5 / 6)), 350);
-  //   let s = 6 * Math.floor(a / 5);
-  //   setCustomStyleGrid({ ...customStyleGrid, width: "".concat(a, "px") });
-  //   setCustomStyleGrid({ ...customStyleGrid, height: "".concat(s, "px") });
-  // };
+  const handleResize = () => {
+    if (!document) return;
+
+    let e = document.querySelector("#grid-wrapper");
+    const height = e?.offsetParent?.clientHeight;
+    const width = e?.offsetParent?.clientWidth;
+    setClientScreenSize({ height, width });
+    return;
+  };
 
   useEffect(() => {
     const dailyWordsData = loadWordsDataFromLocalStorage();
@@ -112,6 +111,10 @@ function App() {
   }, [isGameWon, isGameLost]);
 
   useEffect(() => {
+    handleResize();
+  }, [showHomeScreen]);
+
+  useEffect(() => {
     // if no game state on load, show the user the how-to info modal
     const isNewUser = loadIsNewUser();
     if (isNewUser) {
@@ -136,13 +139,9 @@ function App() {
       setIsLostModalOpen(true);
     }
 
-    // window.addEventListener("resize", handleResize);
-
-    // handleResize();
+    window.addEventListener("resize", handleResize);
+    handleResize();
   }, []);
-
-  // ====================================
-  // ====================================
 
   window.addEventListener("beforeunload", function (event) {
     const shouldClear = localStorage.setItem(
@@ -157,11 +156,7 @@ function App() {
     return "";
   });
 
-  // window.onbeforeunload = function () {
-
-  // };
-
-  // ++++++++++
+  // ====================================
 
   useEffect(() => {
     // manage timer data
@@ -332,17 +327,13 @@ function App() {
       <div
         id="screen-wrapper"
         className="screen-wrapper-custom w-full sm:w-3/4 md:max-w-[500px] pt-2 pb-8 mx-auto sm:px-6 lg:px-8"
-        // style={customStyleGrid}
       >
         <div className="flex items-center justify-center h-16 font-bold text-base">
           {/* {getTimerData()} */}
           timer
         </div>
         <hr className="mb-7 mx-auto" />
-        <div
-          // style={customStyleGrid}
-          className="content-wrapper"
-        >
+        <div className="content-wrapper">
           {!showHomeScreen ? (
             <>
               <Grid
@@ -352,6 +343,7 @@ function App() {
                 rows={6}
                 columns={solutionWord?.length || 5}
                 solution={solutionWord}
+                custom={clientScreenSize}
               />
               <Keyboard
                 onChar={onChar}
@@ -363,7 +355,10 @@ function App() {
             </>
           ) : (
             <>
-              <Home setWordToGuess={onChosenWordToGuess} />
+              <Home
+                custom={clientScreenSize}
+                setWordToGuess={onChosenWordToGuess}
+              />
               <button
                 onClick={() => {
                   localStorage.clear(); //TODO: do we need this?

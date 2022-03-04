@@ -47,12 +47,12 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
               margin: "0 auto",
             }}
           >
-            <HomeScreenGrid
+            {/* <HomeScreenGrid
               matrixPattern={matrixPattern}
               currentRowClassName={""}
               dailyWordsData={dailyWordsData}
               hideEmptyCells={true}
-            />
+            /> */}
           </div>
         </div>
       </div>

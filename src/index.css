@@ -30,12 +30,82 @@ body {
 }
 
 .grid-wrapper-custom {
-  height: 90%;
   display: grid;
-  /* grid-template-columns: repeat(6, minmax(12%, 1fr)); */
-  row-gap: 5px;
-  max-width: 80%;
+  gap: 4px;
   margin: 0 auto;
+  max-width: 440px;
+  max-height: 470px;
+  margin-bottom: 20px;
+}
+
+.letter-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 85%;
+}
+
+@media (max-width: 549.98px) {
+  .grid-wrapper-custom {
+    max-width: 90%;
+  }
+
+  .letter-container {
+    font-size: 70%;
+  }
+}
+
+@media (max-height: 549.98px) {
+  .letter-container {
+    font-size: 60%;
+  }
+}
+
+/* @media (min-width: 550px) {
+  .grid-wrapper-custom {
+    max-height: 80vh;
+  }
+} */
+
+/*
+.grid-wrapper-custom {
+  display: grid;
+  row-gap: 5px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) and (max-width: 712px) {
+  .grid-wrapper-custom {
+    width: 80%;
+  }
+}
+
+@media (min-width: 530px) and (max-width: 629.98px) {
+  .grid-wrapper-custom {
+    width: 70%;
+  }
+}
+
+@media (min-width: 440px) and (max-width: 529.98px) {
+  .grid-wrapper-custom {
+    width: 80%;
+  }
+}
+ 
+@media (min-width: 340px) and (max-width: 439.98px) {
+  .grid-wrapper-custom {
+    width: 90%;
+    max-height: 70vh;
+  }
+}
+
+@media (max-width: 398.98px) {
+  .grid-wrapper-custom {
+    width: 90%;
+    max-height: 50vh;
+  }
 }
 
 .content-wrapper {
@@ -48,7 +118,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
+  font-size: 80%;
+} */
 
 /* ++++++++++ */
 

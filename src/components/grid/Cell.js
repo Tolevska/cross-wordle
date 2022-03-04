@@ -6,7 +6,7 @@ export const Cell = (props) => {
   let borderColor;
 
   let classes =
-    "custom-cell border-solid border-2 flex items-center justify-center mx-0.5 text-4xl font-bold rounded";
+    "custom-cell border-solid border-2 flex items-center justify-center text-4xl font-bold rounded";
 
   if (!status) {
     classes = classes.concat(" bg-white border-slate-200 ");

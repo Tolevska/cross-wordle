@@ -7,16 +7,25 @@ export const HomeScreenGrid = ({
   dailyWordsData,
   hideEmptyCells = false,
   page,
+  custom,
 }) => {
   const columns = matrixPattern[0]?.length;
 
+  let { height, width } = custom;
+  let customSize = 0;
+
+  height = height - 80 - 70; // 80 e navbar 70 e timer
+
+  customSize = height <= width ? height : width;
+
   return (
     <div
-      className={"grid-wrapper-custom pb-6"}
+      className={"grid-wrapper-custom"}
+      id="grid-wrapper"
       style={{
         gridTemplateColumns: `repeat(${columns}, 1fr)`,
-        maxWidth: "400px",
-        height: "55vh",
+        height: `${customSize}px`,
+        width: `${customSize - 30}px`,
       }}
     >
       {matrixPattern &&
