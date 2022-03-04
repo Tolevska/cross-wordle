@@ -21,7 +21,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
             style={{ marginTop: "-1px" }}
           />
         </span>
-        Tap the word in the crosswordle that you’d like to guess first
+        Tap the word in the crosswordle that you’d like to guess first.
       </p>
       <p className="text-xs mb-3">
         <span className="mr-1">
@@ -31,7 +31,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
             style={{ marginTop: "-1px" }}
           />
         </span>
-        You have 5 or 6 guesses to solve for the word
+        You have 6 guesses to solve for the word
       </p>
       <p className="text-xs mb-3">
         <span className="mr-1">
@@ -76,7 +76,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
       <p className="text-xs mb-3">
         <span className="mr-1">
           <img
-            src="/icons/orange-outline-square.svg"
+            src="/icons/cirle-icon.svg"
             className="h-3 inline"
             style={{ marginTop: "-1px", marginRight: "2px", marginLeft: "2px" }}
           />
@@ -91,9 +91,6 @@ export const InfoModal = ({ isOpen, handleClose }) => {
       </p>
       <p className="mt-5 text-xs">
         A new crosswordle will be available each day!
-      </p>
-      <p className="text-xs">
-        Or you can upgrade to keep playing more puzzles.
       </p>
     </BaseModal>
   );
