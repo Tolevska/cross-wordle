@@ -191,7 +191,7 @@ function App() {
         solvedLetterIndexesOfChosenWord.includes(letterIndex) &&
         guesses[solutionWordIndex].length === 0
       ) {
-        const solvedLetter = solutionWord[solvedLetterIndexesOfChosenWord];
+        const solvedLetter = solutionWord[letterIndex];
         updatedGuess = updatedGuess.concat(solvedLetter);
       }
       updatedGuess = updatedGuess.concat(value);
