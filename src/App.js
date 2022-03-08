@@ -151,9 +151,10 @@ function App() {
         const didWinCrossWordle = didWinGame();
         if (didWinCrossWordle) {
           localStorage.setItem("timeSpent", JSON.stringify(time));
+          localStorage.setItem("finishedIn", JSON.stringify(time));
+          setStats(addStatsForCompletedGame(stats, true));
           setDailyWords(newData);
           setIsWonModalOpen(true);
-          localStorage.setItem("finishedIn", JSON.stringify(time));
         }
         window.location.reload();
       }
@@ -164,8 +165,9 @@ function App() {
         setShowHomeScreen(true);
         const didLoseCrossWordle = localStorage.getItem("didLose");
         if (didLoseCrossWordle) {
-          setIsLostModalOpen(true);
           localStorage.setItem("finishedIn", JSON.stringify(time));
+          setStats(addStatsForCompletedGame(stats, false));
+          setIsLostModalOpen(true);
         }
         window.location.reload();
       }
@@ -316,17 +318,11 @@ function App() {
 
         if (noSolvedWords === 3) {
           localStorage.setItem("didWin", true);
-          setStats(
-            addStatsForCompletedGame(stats, guesses[solutionWordIndex].length)
-          );
         }
         return setIsGameWon(true);
       }
 
       if (guesses[solutionWordIndex].length === MAX_CHALLENGES) {
-        setStats(
-          addStatsForCompletedGame(stats, guesses[solutionWordIndex].length + 1)
-        );
         localStorage.setItem("didLose", true);
         setIsGameLost(true);
       }

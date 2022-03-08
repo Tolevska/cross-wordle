@@ -3,13 +3,16 @@ import {
   loadStatsFromLocalStorage,
   saveStatsToLocalStorage,
 } from "../utils/gameState";
+import { getTimeSpent } from "../utils/helpers";
 
-export const addStatsForCompletedGame = (gameStats, count) => {
+export const addStatsForCompletedGame = (gameStats, didWin) => {
+  const timeSpent = getTimeSpent();
+
   const stats = { ...gameStats };
 
   stats.totalGames += 1;
 
-  if (count >= MAX_CHALLENGES) {
+  if (!didWin) {
     // A fail situation
     stats.currentStreak = 0;
     stats.gamesFailed += 1;
@@ -17,7 +20,27 @@ export const addStatsForCompletedGame = (gameStats, count) => {
     stats.currentStreak += 1;
     stats.gamesWon += 1;
 
-    stats.bestTime = "00:00:00"; // TODO handle best time logic;
+    const oldSeconds = parseInt(stats.bestTime.slice(-2));
+    const oldMinutes = parseInt(stats.bestTime.slice(-5).slice(0, 2));
+
+    if (
+      oldMinutes > timeSpent.minutes ||
+      (oldMinutes === timeSpent.minutes && oldSeconds > timeSpent.seconds)
+    ) {
+      const newMinutes =
+        timeSpent.minutes < 10
+          ? `0${timeSpent.minutes}`
+          : `${timeSpent.minutes}`;
+      const newSeconds =
+        timeSpent.seconds < 10
+          ? `0${timeSpent.minutes}`
+          : `${timeSpent.seconds}`;
+
+      let tmp = "00:";
+      tmp = tmp.concat(newMinutes).concat(":").concat(newSeconds);
+
+      stats.bestTime = tmp;
+    }
 
     if (stats.bestStreak < stats.currentStreak) {
       stats.bestStreak = stats.currentStreak;

@@ -143,7 +143,7 @@ export const getTimerData = (time) => {
 
 export const getGeneratedMatrixPattern = () => {
   const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
-  const dayInMs = 86400000; // a day in miliseconds
+  const dayInMs = 86400000;
   const todayInMs = new Date().getTime();
   const latestUpdate = loadDateFromLocalStorage();
   let newIndex = Math.ceil((todayInMs - startDateInMs) / dayInMs);
