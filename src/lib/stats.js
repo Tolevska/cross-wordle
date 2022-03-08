@@ -1,14 +1,13 @@
-import { MAX_CHALLENGES } from "../constants/settings";
 import {
   loadStatsFromLocalStorage,
   saveStatsToLocalStorage,
 } from "../utils/gameState";
 import { getTimeSpent } from "../utils/helpers";
 
-export const addStatsForCompletedGame = (gameStats, didWin) => {
-  const timeSpent = getTimeSpent();
-
+export const addStatsForCompletedGame = (gameStats, didWin, time) => {
   const stats = { ...gameStats };
+
+  const timeSpent = getTimeSpent(time);
 
   stats.totalGames += 1;
 
@@ -24,6 +23,7 @@ export const addStatsForCompletedGame = (gameStats, didWin) => {
     const oldMinutes = parseInt(stats.bestTime.slice(-5).slice(0, 2));
 
     if (
+      stats.bestTime === "00:00:00" ||
       oldMinutes > timeSpent.minutes ||
       (oldMinutes === timeSpent.minutes && oldSeconds > timeSpent.seconds)
     ) {
