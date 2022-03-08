@@ -34,6 +34,7 @@ import {
   didWinGame,
   getUpdatedDailyWordsData,
   getTimerData,
+  getSolvedIndexesForWord,
 } from "./utils/helpers";
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
   const [time, setTime] = useState(0);
   const [solutionWord, setSolutionWord] = useState(null);
   const [solutionWordIndex, setSolutionWordIndex] = useState(null);
+  const [solvedLetterIndexesOfChosenWord, setSolvedLetterIndexesOfChosenWord] =
+    useState([]);
 
   const [dailyWords, setDailyWords] = useState(() =>
     loadWordsDataFromLocalStorage()
@@ -125,8 +128,6 @@ function App() {
     return "";
   });
 
-  // ====================================
-
   useEffect(() => {
     // manage timer data
     let interval = null;
@@ -178,50 +179,54 @@ function App() {
     return () => clearInterval(interval);
   }, [isGameLost, isGameWon]);
 
-  // ====================================
-
-  // const onChar = (value, index = null) => {
-  //   if (
-  //     // currentGuess.length + 1 <= (solutionWord?.length || 5) &&
-  //     guesses[solutionWordIndex].length < MAX_CHALLENGES &&
-  //     !isGameWon
-  //   ) {
-  //     const newArray = currentGuess;
-  //     for (let i = 0; i < solutionWord.length; i++) {
-  //       if (index === i) {
-  //         newArray[index] = value;
-  //       } else if (!index) {
-  //         newArray.push(value);
-  //       }
-  //       if (!newArray[index]) {
-  //         newArray[index] = null;
-  //       }
-  //     }
-  //     setCurrentGuess(newArray);
-  //   } else {
-  //     console.log("t");
-  //   }
-  // };
-
   const onChar = (value) => {
     if (
       unicodeLength(`${currentGuess}${value}`) <= (solutionWord?.length || 5) &&
       guesses[solutionWordIndex].length < MAX_CHALLENGES &&
       !isGameWon
     ) {
-      setCurrentGuess(`${currentGuess}${value}`);
+      const letterIndex = currentGuess.length;
+      let updatedGuess = currentGuess;
+      if (
+        solvedLetterIndexesOfChosenWord.includes(letterIndex) &&
+        guesses[solutionWordIndex].length === 0
+      ) {
+        const solvedLetter = solutionWord[solvedLetterIndexesOfChosenWord];
+        updatedGuess = updatedGuess.concat(solvedLetter);
+      }
+      updatedGuess = updatedGuess.concat(value);
+      setCurrentGuess(updatedGuess);
     }
+  };
+
+  const getSolvedLetters = () => {
+    if (
+      (guesses && !guesses[solutionWord]) ||
+      (guesses && guesses[solutionWord] && guesses[solutionWord].length === 0)
+    ) {
+      const solvedLetters = [];
+
+      solvedLetterIndexesOfChosenWord.forEach((index) =>
+        solvedLetters.push(solutionWord[index])
+      );
+      return solvedLetters;
+    }
+    return [];
   };
 
   const onChosenWordToGuess = (chosenWord) => {
     setSolutionWord(chosenWord);
-    // setCurrentGuess(new Array(chosenWord.length));
-
     const dailyWordsData = loadWordsDataFromLocalStorage();
     const wordIndex = dailyWordsData.findIndex(
       (word) => word.word === chosenWord
     );
+    const solvedLettersIndexes = getSolvedIndexesForWord(
+      dailyWords,
+      guesses[wordIndex],
+      chosenWord
+    );
 
+    setSolvedLetterIndexesOfChosenWord(solvedLettersIndexes);
     setSolutionWordIndex(wordIndex);
     setShowHomeScreen(false);
   };
@@ -231,14 +236,20 @@ function App() {
   };
 
   const onDelete = () => {
-    // const updatedCurrentGuess = currentGuess.slice(0, -1);
-    const updatedCurrentGuess = currentGuess.split("").slice(0, -1).join("");
+    let updatedCurrentGuess = currentGuess.split("");
+    if (
+      solvedLetterIndexesOfChosenWord.includes(currentGuess.length - 1) &&
+      guesses[solutionWordIndex].length === 0
+    ) {
+      updatedCurrentGuess = updatedCurrentGuess.slice(0, -2).join("");
+    } else {
+      updatedCurrentGuess = updatedCurrentGuess.slice(0, -1).join("");
+    }
     setCurrentGuess(updatedCurrentGuess);
   };
 
   const onEnter = () => {
     if (isGameWon || isGameLost) return;
-
     // check if word is not long enough
     // const currentGuessLength = currentGuess.length;
     const currentGuessLength = unicodeLength(currentGuess);
@@ -365,13 +376,13 @@ function App() {
               <Grid
                 guesses={guesses[solutionWordIndex]}
                 currentGuess={currentGuess}
-                // onChar={onChar}
                 currentRowClassName={currentRowClass}
                 rows={6}
                 columns={solutionWord?.length || 5}
                 solution={solutionWord}
                 custom={clientScreenSize}
                 dailyWords={dailyWords}
+                solvedCellIndexes={solvedLetterIndexesOfChosenWord}
               />
               <Keyboard
                 onChar={onChar}
@@ -379,6 +390,7 @@ function App() {
                 onEnter={onEnter}
                 guesses={guesses[solutionWordIndex]}
                 solution={solutionWord}
+                getSolvedLetters={getSolvedLetters}
               />
             </>
           ) : (

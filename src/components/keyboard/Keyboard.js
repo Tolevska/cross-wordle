@@ -11,8 +11,22 @@ export const Keyboard = ({
   guesses,
   isRevealing,
   solution,
+  getSolvedLetters,
 }) => {
   const charStatuses = getStatuses(guesses, solution);
+
+  const isLetterSolved = (letter) => {
+    const solved = getSolvedLetters();
+    return solved.includes(letter);
+  };
+
+  const getLetterStatus = (letter) => {
+    if (isLetterSolved(letter)) {
+      return "correct";
+    } else {
+      return charStatuses[letter];
+    }
+  };
 
   const onClick = (value) => {
     if (value === "ENTER") {
@@ -51,7 +65,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={getLetterStatus(key)}
             isRevealing={isRevealing}
           />
         ))}
@@ -62,7 +76,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={getLetterStatus(key)}
             isRevealing={isRevealing}
           />
         ))}
@@ -76,7 +90,7 @@ export const Keyboard = ({
             value={key}
             key={key}
             onClick={onClick}
-            status={charStatuses[key]}
+            status={getLetterStatus(key)}
             isRevealing={isRevealing}
           />
         ))}

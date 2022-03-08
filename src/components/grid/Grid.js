@@ -13,7 +13,7 @@ export const Grid = ({
   solution,
   custom,
   dailyWords,
-  // onChar = () => {},
+  solvedCellIndexes,
 }) => {
   const empties =
     guesses.length < rows - 1
@@ -69,7 +69,7 @@ export const Grid = ({
           guesses={guesses}
           dailyWords={dailyWords}
           solution={solution}
-          // onChar={onChar}
+          solvedCellIndexes={solvedCellIndexes}
         />
       )}
       {empties.map((_, i) => (
