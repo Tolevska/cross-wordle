@@ -31,7 +31,7 @@ export const getWordOfDay = () => {
   const now = Date.now();
   const msInDay = 86400000;
   const index = Math.floor((now - epochMs) / msInDay);
-  const nextday = (index + 1) * msInDay + epochMs;
+  const nextday = index * msInDay + epochMs + 3600000; //plus one hour to make it UTC0
 
   return {
     tomorrow: nextday,

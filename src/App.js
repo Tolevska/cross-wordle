@@ -152,7 +152,7 @@ function App() {
         if (didWinCrossWordle) {
           localStorage.setItem("timeSpent", JSON.stringify(time));
           localStorage.setItem("finishedIn", JSON.stringify(time));
-          setStats(addStatsForCompletedGame(stats, didWinCrossWordle));
+          setStats(addStatsForCompletedGame(stats, true));
           setDailyWords(newData);
           setIsWonModalOpen(true);
         }
@@ -166,7 +166,7 @@ function App() {
         const didLoseCrossWordle = localStorage.getItem("didLose");
         if (didLoseCrossWordle) {
           localStorage.setItem("finishedIn", JSON.stringify(time));
-          setStats(addStatsForCompletedGame(stats, didLoseCrossWordle));
+          setStats(addStatsForCompletedGame(stats, false));
           setIsLostModalOpen(true);
         }
         window.location.reload();

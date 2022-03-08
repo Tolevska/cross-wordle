@@ -20,14 +20,27 @@ export const addStatsForCompletedGame = (gameStats, didWin) => {
     stats.currentStreak += 1;
     stats.gamesWon += 1;
 
-    const minutes =
-      timeSpent.minutes < 10 ? `0${timeSpent.minutes}` : `${timeSpent.minutes}`;
-    const seconds =
-      timeSpent.seconds < 10 ? `0${timeSpent.minutes}` : `${timeSpent.seconds}`;
-    let tmp = "00:";
-    tmp = tmp.concat(minutes).concat(":").concat(seconds);
+    const oldSeconds = parseInt(stats.bestTime.slice(-2));
+    const oldMinutes = parseInt(stats.bestTime.slice(-5).slice(0, 2));
 
-    stats.bestTime = tmp;
+    if (
+      oldMinutes > timeSpent.minutes ||
+      (oldMinutes === timeSpent.minutes && oldSeconds > timeSpent.seconds)
+    ) {
+      const newMinutes =
+        timeSpent.minutes < 10
+          ? `0${timeSpent.minutes}`
+          : `${timeSpent.minutes}`;
+      const newSeconds =
+        timeSpent.seconds < 10
+          ? `0${timeSpent.minutes}`
+          : `${timeSpent.seconds}`;
+
+      let tmp = "00:";
+      tmp = tmp.concat(newMinutes).concat(":").concat(newSeconds);
+
+      stats.bestTime = tmp;
+    }
 
     if (stats.bestStreak < stats.currentStreak) {
       stats.bestStreak = stats.currentStreak;
