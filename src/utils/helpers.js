@@ -281,7 +281,7 @@ export const handleShare = () => {
     pattern = getBeatCrosswordleTimeLabel();
     pattern = pattern.concat("\n\n");
   } else {
-    pattern = `I lost Crosswordle #${getIndexOfWord()}\n`;
+    pattern = `I lost Crosswordly #${getIndexOfWord()}\n`;
   }
 
   matrix.forEach((row) => {
@@ -336,9 +336,9 @@ export const getTimeSpentLabel = () => {
 export const getBeatCrosswordleTimeLabel = () => {
   const { minutes, seconds } = getTimeSpent();
   if (minutes === 0) {
-    return `I beat Crosswordle ${"#1"} in ${seconds} seconds!`;
+    return `I beat Crosswordly ${"#1"} in ${seconds} seconds!`;
   }
-  return `I beat Crosswordle ${"#1"} in ${minutes} minutes and ${seconds} seconds!`;
+  return `I beat Crosswordly ${"#1"} in ${minutes} minutes and ${seconds} seconds!`;
 };
 
 export const getTimeSpent = () => {
