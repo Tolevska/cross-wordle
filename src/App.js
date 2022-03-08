@@ -347,7 +347,7 @@ function App() {
             <img src="/icons/x-icon.svg" />
           </button>
         )}
-        <p className="text-lg font-semibold">CROSSWORDLE</p>
+        <p className="text-lg font-semibold">CROSSWORDLY</p>
         <div className="absolute align-middle" style={{ right: "36px" }}>
           <button
             onClick={() => setIsInfoModalOpen((isOpen) => !isOpen)}

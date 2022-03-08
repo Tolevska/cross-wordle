@@ -35,7 +35,7 @@ export const YouLostModal = ({ isOpen, handleClose }) => {
           Come back tomorrow to try again!
         </p>
         <p className="text-xs mt-4 text-black">
-          <b>Crosswordle #{getIndexOfWord()}</b>
+          <b>Crosswordly #{getIndexOfWord()}</b>
         </p>
         <p className="text-xs text-gray-500">{getDateFormatted()}</p>
         <hr className="w-full mt-4 mb-3" />

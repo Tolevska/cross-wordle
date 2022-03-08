@@ -6,7 +6,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
       <img src="/icons/help-header.svg" className="mx-auto mt-8" />
       <hr className="mb-5" style={{ width: "70%" }} />
       <p className="text-xs">
-        Crosswordle is the next iteration of the popular word guessing game.
+        Crosswordly is the next iteration of the popular word guessing game.
         Instead of guessing one word, you’re challenged to solve an intersecting
         puzzle of 4 words.
       </p>
@@ -21,7 +21,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
             style={{ marginTop: "-1px" }}
           />
         </span>
-        Tap the word in the crosswordle that you’d like to guess first.
+        Tap the word in the crosswordly that you’d like to guess first.
       </p>
       <p className="text-xs mb-3">
         <span className="mr-1">
@@ -90,7 +90,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
         Be careful, if you run out of guesses on any word, you lose the game!
       </p>
       <p className="mt-5 text-xs">
-        A new crosswordle will be available each day!
+        A new crosswordly will be available each day!
       </p>
     </BaseModal>
   );
