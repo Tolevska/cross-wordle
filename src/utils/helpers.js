@@ -341,11 +341,15 @@ export const getBeatCrosswordleTimeLabel = () => {
   return `I beat Crosswordly ${"#1"} in ${minutes} minutes and ${seconds} seconds!`;
 };
 
-export const getTimeSpent = () => {
-  if (localStorage.getItem("finishedIn")) {
-    const time = localStorage.getItem("finishedIn");
-    let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
-    let seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2);
+export const getTimeSpent = (time = null) => {
+  let finishedIn = time;
+  if (!finishedIn && localStorage.getItem("finishedIn")) {
+    finishedIn = localStorage.getItem("finishedIn");
+  }
+
+  if (finishedIn) {
+    let minutes = ("0" + Math.floor((finishedIn / 60000) % 60)).slice(-2);
+    let seconds = ("0" + Math.floor((finishedIn / 1000) % 60)).slice(-2);
 
     if (minutes.split("")[0] === "0") {
       minutes = parseInt(minutes.split("")[1]);
