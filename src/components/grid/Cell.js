@@ -1,5 +1,11 @@
 export const Cell = (props) => {
-  const { value, status, page = "wordle", isGameOver = false, key } = props;
+  const {
+    value,
+    status,
+    page = "wordle",
+    isGameOver = false,
+    isSolvedLetter = false,
+  } = props;
   const border = `${props.borderStyle}`;
 
   let backgroundColor;
@@ -45,6 +51,9 @@ export const Cell = (props) => {
   } else if (status === "pending") {
     setPendingStyle();
   }
+  if (isSolvedLetter) {
+    setCorrectStyle();
+  }
 
   if (!isGameOver) {
     if (status === "absent" && page === "homeScreen") {
@@ -86,6 +95,8 @@ export const Cell = (props) => {
         <div className="letter-container">
           {value === "-"
             ? ""
+            : isSolvedLetter
+            ? value
             : !isGameOver
             ? status === "pending" ||
               (status === "absent" && page === "homeScreen")

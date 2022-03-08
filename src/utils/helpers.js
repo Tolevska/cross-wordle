@@ -6,6 +6,65 @@ import {
   saveWordsDataToLocalStorage,
 } from "./gameState";
 
+export const getSolvedIndexesForWord = (dailyWords, guesses, solution) => {
+  const solvedIndexes = [];
+
+  if (dailyWords && guesses.length === 0) {
+    const solvedWordsData = dailyWords.filter((word) => word.isSolved === true);
+
+    if (solvedWordsData && solvedWordsData.length > 0) {
+      const selectedWordData = dailyWords.find(
+        (word) => word.word === solution
+      );
+      const solvedWordsWithDifferentDirection = solvedWordsData.filter(
+        (word) => {
+          const selectedWordDirection = selectedWordData.rowNumber
+            ? "row"
+            : "col";
+          const wordDirection = word.rowNumber ? "row" : "col";
+          return wordDirection !== selectedWordDirection;
+        }
+      );
+
+      if (
+        solvedWordsWithDifferentDirection &&
+        solvedWordsWithDifferentDirection.length > 0
+      ) {
+        solvedWordsWithDifferentDirection.forEach((solvedWordData) => {
+          // rowNumber ili colNumber; // startIndex
+          if (solvedWordData.rowNumber) {
+            // nasiot e vertikalen; pogodenite se horizontalni
+            if (
+              selectedWordData.colNumber >= solvedWordData.startIndex &&
+              selectedWordData.colNumber <=
+                solvedWordData.startIndex + selectedWordData.word.length
+            ) {
+              solvedIndexes.push(
+                solvedWordData.rowNumber - selectedWordData.startIndex
+              );
+              // solved letters gi sodrzi bukvite kade sto se secat
+            }
+          } else {
+            // nasiot zbor e horizontalen; pogodenite se vertikalni
+            if (
+              selectedWordData.rowNumber >= solvedWordData.startIndex &&
+              selectedWordData.rowNumber <=
+                solvedWordData.startIndex + solvedWordData.word.length
+            ) {
+              solvedIndexes.push(
+                solvedWordData.colNumber - selectedWordData.startIndex
+              );
+              // solved letters gi sodrzi bukvite kade sto se secat
+            }
+          }
+        });
+      }
+    }
+  }
+
+  return solvedIndexes;
+};
+
 export const getUpdatedDailyWordsData = (dailyWordsData, solution) => {
   // se povikuva od App.js koga kje se pogodi nekoj zbor
   if (!dailyWordsData || dailyWordsData.length === 0) return [];
@@ -75,6 +134,13 @@ export const getIndexOfWord = () => {
   return newIndex;
 };
 
+export const getTimerData = (time) => {
+  const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2) + ":";
+  const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2) + ":";
+  const miliseconds = ("0" + ((time / 10) % 1000)).slice(-2);
+  return minutes + seconds + miliseconds;
+};
+
 export const getGeneratedMatrixPattern = () => {
   const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
   const dayInMs = 86400000; // a day in miliseconds
@@ -89,6 +155,7 @@ export const getGeneratedMatrixPattern = () => {
     if (prevIndex < newIndex) {
       pattern = WORD_PATTERNS[newIndex];
       localStorage.removeItem("timeSpent");
+      localStorage.clear();
     } else {
       return previousPattern;
     }
