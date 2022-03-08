@@ -12,6 +12,8 @@ export const Grid = ({
   columns = 5,
   solution,
   custom,
+  dailyWords,
+  // onChar = () => {},
 }) => {
   const empties =
     guesses.length < rows - 1
@@ -47,21 +49,27 @@ export const Grid = ({
         width: `${finalWidth}px`,
       }}
     >
-      {guesses.map((guess, i) => {
-        return (
-          <CompletedRow
-            key={i}
-            guess={guess}
-            isRevealing={isRevealing && guesses.length - 1 === i}
-            solution={solution}
-          />
-        );
-      })}
-      {guesses.length < rows && (
+      {guesses &&
+        guesses.map((guess, i) => {
+          return (
+            <CompletedRow
+              key={i}
+              guess={guess}
+              isRevealing={isRevealing && guesses.length - 1 === i}
+              solution={solution}
+            />
+          );
+        })}
+      {guesses && guesses.length < rows && (
+        // tuka da se prati info za statusot i vrednosta na cell-ot
         <CurrentRow
           guess={currentGuess}
           className={currentRowClassName}
           columns={columns}
+          guesses={guesses}
+          dailyWords={dailyWords}
+          solution={solution}
+          // onChar={onChar}
         />
       )}
       {empties.map((_, i) => (

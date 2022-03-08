@@ -33,6 +33,7 @@ import {
   didEndGame,
   didWinGame,
   getUpdatedDailyWordsData,
+  getTimerData,
 } from "./utils/helpers";
 
 function App() {
@@ -45,7 +46,6 @@ function App() {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isGameLost, setIsGameLost] = useState(false);
-  // TODO: I think this is isWordGuessed and not Game won but let it be
   const [isWonModalOpen, setIsWonModalOpen] = useState(false);
   const [isLostModalOpen, setIsLostModalOpen] = useState(false);
   const [isRevealing, setIsRevealing] = useState(false);
@@ -60,14 +60,6 @@ function App() {
 
   const [guesses, setGuesses] = useState(() => {
     const loaded = loadGameStateFromLocalStorage();
-    //todo improve logic
-    // const gameWasWon = loaded?.guesses.includes(solutionWord);
-    // if (gameWasWon) {
-    //   setIsGameWon(true);
-    // }
-    // if (loaded && loaded.guesses.length === MAX_CHALLENGES && !gameWasWon) {
-    //   setIsGameLost(true);
-    // }
     return loaded || Array.from(new Array(4), () => []);
   });
 
@@ -188,6 +180,29 @@ function App() {
 
   // ====================================
 
+  // const onChar = (value, index = null) => {
+  //   if (
+  //     // currentGuess.length + 1 <= (solutionWord?.length || 5) &&
+  //     guesses[solutionWordIndex].length < MAX_CHALLENGES &&
+  //     !isGameWon
+  //   ) {
+  //     const newArray = currentGuess;
+  //     for (let i = 0; i < solutionWord.length; i++) {
+  //       if (index === i) {
+  //         newArray[index] = value;
+  //       } else if (!index) {
+  //         newArray.push(value);
+  //       }
+  //       if (!newArray[index]) {
+  //         newArray[index] = null;
+  //       }
+  //     }
+  //     setCurrentGuess(newArray);
+  //   } else {
+  //     console.log("t");
+  //   }
+  // };
+
   const onChar = (value) => {
     if (
       unicodeLength(`${currentGuess}${value}`) <= (solutionWord?.length || 5) &&
@@ -200,6 +215,7 @@ function App() {
 
   const onChosenWordToGuess = (chosenWord) => {
     setSolutionWord(chosenWord);
+    // setCurrentGuess(new Array(chosenWord.length));
 
     const dailyWordsData = loadWordsDataFromLocalStorage();
     const wordIndex = dailyWordsData.findIndex(
@@ -215,6 +231,7 @@ function App() {
   };
 
   const onDelete = () => {
+    // const updatedCurrentGuess = currentGuess.slice(0, -1);
     const updatedCurrentGuess = currentGuess.split("").slice(0, -1).join("");
     setCurrentGuess(updatedCurrentGuess);
   };
@@ -223,6 +240,7 @@ function App() {
     if (isGameWon || isGameLost) return;
 
     // check if word is not long enough
+    // const currentGuessLength = currentGuess.length;
     const currentGuessLength = unicodeLength(currentGuess);
     const solutionWordLength = solutionWord?.length;
 
@@ -234,6 +252,7 @@ function App() {
     }
 
     // check if word does not exist in db
+    // if (!isWordInWordList(currentGuess.join(""))) {
     if (!isWordInWordList(currentGuess)) {
       setCurrentRowClass("jiggle");
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
@@ -248,11 +267,17 @@ function App() {
     }, REVEAL_TIME_MS * (solutionWord?.length || 5));
 
     // do not allow duplicate guesses
+    // if (guesses[solutionWordIndex].includes(currentGuess.join(""))) {
     if (guesses[solutionWordIndex].includes(currentGuess)) {
       return showErrorAlert(WORD_ALREADY_GUESSED, {
         onClose: clearCurrentRowClass,
       });
     }
+
+    // const winningWord = isWinningWord(currentGuess.join(""), solutionWord);
+    // guesses[solutionWordIndex].push(currentGuess.join(""));
+    // setGuesses(guesses);
+    // setCurrentGuess(new Array(5, () => null));
 
     const winningWord = isWinningWord(currentGuess, solutionWord);
 
@@ -263,6 +288,7 @@ function App() {
     saveGameStateToLocalStorage(guesses);
 
     if (
+      // currentGuess.length === (solutionWord?.length || 5) && // if length of word is correct
       unicodeLength(currentGuess) === (solutionWord?.length || 5) && // if length of word is correct
       guesses[solutionWordIndex].length <= MAX_CHALLENGES && // if number of guesses <= 6
       !isGameWon // if user lost
@@ -294,13 +320,6 @@ function App() {
         setIsGameLost(true);
       }
     }
-  };
-
-  const getTimerData = () => {
-    const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2) + ":";
-    const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2) + ":";
-    const miliseconds = ("0" + ((time / 10) % 1000)).slice(-2);
-    return minutes + seconds + miliseconds;
   };
 
   return (
@@ -337,7 +356,7 @@ function App() {
         style={{ maxHeight: Platform.OS === "iOS" ? "60vh" : "80vh" }}
       >
         <div className="flex items-center justify-center h-16 font-bold text-base">
-          {getTimerData()}
+          {getTimerData(time)}
         </div>
         <hr className="mb-7 mx-auto" />
         <div className="content-wrapper">
@@ -346,11 +365,13 @@ function App() {
               <Grid
                 guesses={guesses[solutionWordIndex]}
                 currentGuess={currentGuess}
+                // onChar={onChar}
                 currentRowClassName={currentRowClass}
                 rows={6}
                 columns={solutionWord?.length || 5}
                 solution={solutionWord}
                 custom={clientScreenSize}
+                dailyWords={dailyWords}
               />
               <Keyboard
                 onChar={onChar}

@@ -10,16 +10,17 @@ export const CompletedRow = ({ guess, isRevealing, solution }) => {
 
   return (
     <>
-      {splitGuess.map((letter, i) => (
-        <Cell
-          key={i}
-          value={letter}
-          status={statuses[i]}
-          position={i}
-          isRevealing={isRevealing}
-          isCompleted
-        />
-      ))}
+      {splitGuess &&
+        splitGuess.map((letter, i) => (
+          <Cell
+            key={i}
+            value={letter}
+            status={statuses[i]}
+            position={i}
+            isRevealing={isRevealing}
+            isCompleted
+          />
+        ))}
     </>
   );
 };

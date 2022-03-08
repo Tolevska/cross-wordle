@@ -75,6 +75,13 @@ export const getIndexOfWord = () => {
   return newIndex;
 };
 
+export const getTimerData = (time) => {
+  const minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2) + ":";
+  const seconds = ("0" + Math.floor((time / 1000) % 60)).slice(-2) + ":";
+  const miliseconds = ("0" + ((time / 10) % 1000)).slice(-2);
+  return minutes + seconds + miliseconds;
+};
+
 export const getGeneratedMatrixPattern = () => {
   const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
   const dayInMs = 86400000; // a day in miliseconds
@@ -89,6 +96,7 @@ export const getGeneratedMatrixPattern = () => {
     if (prevIndex < newIndex) {
       pattern = WORD_PATTERNS[newIndex];
       localStorage.removeItem("timeSpent");
+      localStorage.clear();
     } else {
       return previousPattern;
     }
