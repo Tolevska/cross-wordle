@@ -76,7 +76,7 @@ export const InfoModal = ({ isOpen, handleClose }) => {
       <p className="text-xs mb-3">
         <span className="mr-1">
           <img
-            src="/icons/cirle-icon.svg"
+            src="/icons/circle-icon.svg"
             className="h-3 inline"
             style={{ marginTop: "-1px", marginRight: "2px", marginLeft: "2px" }}
           />
