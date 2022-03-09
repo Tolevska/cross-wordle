@@ -197,6 +197,15 @@ function App() {
         updatedGuess = updatedGuess.concat(solvedLetter);
       }
       updatedGuess = updatedGuess.concat(value);
+
+      if (
+        solvedLetterIndexesOfChosenWord.includes(letterIndex + 1) &&
+        guesses[solutionWordIndex].length === 0 &&
+        updatedGuess.length + 1 === solutionWord.length
+      ) {
+        updatedGuess = updatedGuess.concat(solutionWord[letterIndex + 1]);
+      }
+
       setCurrentGuess(updatedGuess);
     }
   };
