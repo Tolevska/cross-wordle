@@ -22,7 +22,7 @@ export const Grid = ({
 
   let { height, width } = custom;
 
-  height = height - 80 - 70 - 180 - 20; // 80 e navbar 70 e timer 180 e keyboard 20 margin pod grid
+  height = height - 80 - 70 - 180 - 20; // height: 80px navbar; 70px timer; 180px keyboard; 20px margin
   if (Platform.OS === "iOS") {
     height = height - 90;
   }
@@ -61,7 +61,6 @@ export const Grid = ({
           );
         })}
       {guesses && guesses.length < rows && (
-        // tuka da se prati info za statusot i vrednosta na cell-ot
         <CurrentRow
           guess={currentGuess}
           className={currentRowClassName}

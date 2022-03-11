@@ -5,7 +5,6 @@ export const isWordInWordList = (word) => {
 };
 
 export const isWinningWord = (word, solution) => {
-  // TODO: maybe move these in helpers file
   return solution === word;
 };
 

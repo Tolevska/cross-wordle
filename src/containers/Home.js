@@ -39,8 +39,6 @@ const Home = ({ setWordToGuess, custom }) => {
     );
 
     if (loadedData && isSameDay) {
-      // const test = new Date().getTime() - dayInMs;
-      // const tmp = test > todayInMs;
       return loadedData;
     } else {
       setLatestUpdateOfWord(todayInMs);

@@ -52,16 +52,15 @@ export const getUpdatedHomeScreenRowStatuses = (
       solutionWordData;
 
     if (rowNumber !== null && rowNumber === rowIndex) {
-      // ako zborot e horizontalen i e vo ovoj red
+      // direction of word is row; word is in this row
       for (let i = 0; i < word.length; i++) {
         const letterData = rowStatuses[startIndex + i];
         const indexOfLetterInWord = i;
-        // tuka ima bukva
         if (isSolved) {
-          //zborot e solved taka sto site bukvi od nego se pogodeni
+          // the word is solved; all letters are solved
           letterData.status = "correct";
         } else {
-          // zborot ne e solved taka sto ne se site bukvi pogodeni
+          // the word is not solved;
           const isLetterCorrectValue = isLetterCorrect(
             letterData.value,
             indexOfLetterInWord,
@@ -72,14 +71,14 @@ export const getUpdatedHomeScreenRowStatuses = (
           }
         }
       }
-      return; //todo is this obsolete?
+      return;
     } else if (
       colNumber !== null &&
       startIndex <= rowIndex &&
       startIndex + word.length - 1 >= rowIndex &&
       isSolved
     ) {
-      // ako zborot e pogoden i e vertikalen i ima bukva vo ovoj red
+      // the word is solved; direction is column; has letter in this row
       rowStatuses[colNumber].status = "correct";
     }
   });

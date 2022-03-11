@@ -31,9 +31,7 @@ export const getSolvedIndexesForWord = (dailyWords, guesses, solution) => {
         solvedWordsWithDifferentDirection.length > 0
       ) {
         solvedWordsWithDifferentDirection.forEach((solvedWordData) => {
-          // rowNumber ili colNumber; // startIndex
           if (solvedWordData.rowNumber) {
-            // nasiot e vertikalen; pogodenite se horizontalni
             if (
               selectedWordData.colNumber >= solvedWordData.startIndex &&
               selectedWordData.colNumber <=
@@ -42,10 +40,8 @@ export const getSolvedIndexesForWord = (dailyWords, guesses, solution) => {
               solvedIndexes.push(
                 solvedWordData.rowNumber - selectedWordData.startIndex
               );
-              // solved letters gi sodrzi bukvite kade sto se secat
             }
           } else {
-            // nasiot zbor e horizontalen; pogodenite se vertikalni
             if (
               selectedWordData.rowNumber >= solvedWordData.startIndex &&
               selectedWordData.rowNumber <=
@@ -54,7 +50,6 @@ export const getSolvedIndexesForWord = (dailyWords, guesses, solution) => {
               solvedIndexes.push(
                 solvedWordData.colNumber - selectedWordData.startIndex
               );
-              // solved letters gi sodrzi bukvite kade sto se secat
             }
           }
         });
@@ -66,7 +61,6 @@ export const getSolvedIndexesForWord = (dailyWords, guesses, solution) => {
 };
 
 export const getUpdatedDailyWordsData = (dailyWordsData, solution) => {
-  // se povikuva od App.js koga kje se pogodi nekoj zbor
   if (!dailyWordsData || dailyWordsData.length === 0) return [];
   const updatedDailyWordsData = dailyWordsData;
   const wordIndex = updatedDailyWordsData.findIndex(
@@ -127,7 +121,7 @@ export const generateMatrix = (pattern) => {
 };
 
 export const getIndexOfWord = () => {
-  const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
+  const startDateInMs = new Date("2022-03-11").getTime();
   const dayInMs = 86400000; // a day in miliseconds
   const todayInMs = new Date().getTime();
   let newIndex = Math.ceil((todayInMs - startDateInMs) / dayInMs);
@@ -142,7 +136,7 @@ export const getTimerData = (time) => {
 };
 
 export const getGeneratedMatrixPattern = () => {
-  const startDateInMs = new Date("2022-03-01").getTime(); // TODO: change date before going in production
+  const startDateInMs = new Date("2022-03-11").getTime();
   const dayInMs = 86400000;
   const todayInMs = new Date().getTime();
   const latestUpdate = loadDateFromLocalStorage();
@@ -224,7 +218,6 @@ export const getWordsData = (matrix) => {
             break;
           }
         } else {
-          // TODO is this else obsolete?
           tmp = [];
           wordStartIndex = null;
         }
@@ -261,7 +254,6 @@ export const getWordsData = (matrix) => {
             break;
           }
         } else {
-          // TODO is this else obsolete?
           tmp = [];
           wordStartIndex = null;
         }
@@ -286,23 +278,11 @@ export const handleShare = () => {
 
   matrix.forEach((row) => {
     row.forEach((element) => {
-      if (
-        element.value === "-"
-        //  || element.status === "pending" // ako ima bukva ama ne e pogodena
-      ) {
-        // ako nema bukva
+      if (element.value === "-") {
         pattern = pattern.concat(tiles[2]);
       } else if (element.status === "correct") {
-        // ako ima bukva i e pogodena i ako e pogoden cel zbor
         pattern = pattern.concat(tiles[0]);
-      }
-      // else if (
-      //   element.status === "present" ||
-      //   (element.status === "absent" && element.value !== "-") ||
-      // )
-      // ako ima bukva i e pogodena ama ne e pogoden cel zbor
-      else {
-        // ako ima bukva ama ne pogoden zborot
+      } else {
         pattern = pattern.concat(tiles[1]);
       }
     });

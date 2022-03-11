@@ -262,7 +262,6 @@ function App() {
   const onEnter = () => {
     if (isGameWon || isGameLost) return;
     // check if word is not long enough
-    // const currentGuessLength = currentGuess.length;
     const currentGuessLength = unicodeLength(currentGuess);
     const solutionWordLength = solutionWord?.length;
 
@@ -274,7 +273,6 @@ function App() {
     }
 
     // check if word does not exist in db
-    // if (!isWordInWordList(currentGuess.join(""))) {
     if (!isWordInWordList(currentGuess)) {
       setCurrentRowClass("jiggle");
       return showErrorAlert(WORD_NOT_FOUND_MESSAGE, {
@@ -289,17 +287,11 @@ function App() {
     }, REVEAL_TIME_MS * (solutionWord?.length || 5));
 
     // do not allow duplicate guesses
-    // if (guesses[solutionWordIndex].includes(currentGuess.join(""))) {
     if (guesses[solutionWordIndex].includes(currentGuess)) {
       return showErrorAlert(WORD_ALREADY_GUESSED, {
         onClose: clearCurrentRowClass,
       });
     }
-
-    // const winningWord = isWinningWord(currentGuess.join(""), solutionWord);
-    // guesses[solutionWordIndex].push(currentGuess.join(""));
-    // setGuesses(guesses);
-    // setCurrentGuess(new Array(5, () => null));
 
     const winningWord = isWinningWord(currentGuess, solutionWord);
 
@@ -310,7 +302,6 @@ function App() {
     saveGameStateToLocalStorage(guesses);
 
     if (
-      // currentGuess.length === (solutionWord?.length || 5) && // if length of word is correct
       unicodeLength(currentGuess) === (solutionWord?.length || 5) && // if length of word is correct
       guesses[solutionWordIndex].length <= MAX_CHALLENGES && // if number of guesses <= 6
       !isGameWon // if user lost
@@ -404,28 +395,6 @@ function App() {
                 custom={clientScreenSize}
                 setWordToGuess={onChosenWordToGuess}
               />
-              {/* TODO: remove this before going in production */}
-              <button
-                onClick={() => {
-                  localStorage.clear(); //TODO: do we need this?
-                  localStorage.setItem("shouldClear", JSON.stringify(true));
-                  window.location.reload();
-                }}
-                className="bg-orange-300 px-3 py-2"
-              >
-                Play again
-              </button>
-              <h3 className="mt-3">
-                Solutions for today: (for testing purposes)
-              </h3>
-              {loadWordsDataFromLocalStorage() &&
-                loadWordsDataFromLocalStorage().map((el, i) => {
-                  return (
-                    <pre key={i}>
-                      <b>{el.word}</b>
-                    </pre>
-                  );
-                })}
             </>
           )}
         </div>
