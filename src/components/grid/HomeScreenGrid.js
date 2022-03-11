@@ -16,7 +16,7 @@ export const HomeScreenGrid = ({
   if (!isModal) {
     let customSize = 0;
     let { height, width } = custom;
-    height = height - 80 - 70; // 80 e navbar 70 e timer
+    height = height - 80 - 70; // height: 80px navbar; 70px timer
     customSize = height <= width ? height : width;
     customStyle = {
       height: `${customSize}px`,
